@@ -26,7 +26,7 @@ export default function Home() {
             .then((response => {
                 if (response.status === 204) {
                     showNotification("Note Deleted Successfully!");
-                    setNotes(notes.filter(note => note.id !== id)); // Remove deleted note from state
+                    setNotes(notes.filter(note => note.id !== id));
                 } else {
                     showNotification("Error Deleting Note");
                 }
@@ -44,6 +44,15 @@ export default function Home() {
             <NotificationSlider/>
             {notes.map((note) => (
                 <div key={note.id} className="bg-white shadow-xl rounded-lg overflow-hidden transition transform hover:scale-105 hover:shadow-2xl">
+                    {note.cover_thumbnail && (
+                        <div className="relative h-40 overflow-hidden">
+                            <img
+                                src={note.cover_thumbnail}
+                                alt={note.title}
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                    )}
                     <div className="p-6">
                         <div className="font-bold text-2xl mb-4 text-gray-800">{note.title}</div>
                         <p className="text-gray-700 text-base mb-4">{note.content}</p>
