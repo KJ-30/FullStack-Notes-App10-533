@@ -2,10 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../api";
 import NotificationContext from "../context/NotificationContext";
+import CoverUploader from "./cover/CoverUploader";
 
 export default function NoteForm() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const [coverUrl, setCoverUrl] = useState(null);
+    const [thumbnailUrl, setThumbnailUrl] = useState(null);
     const navigate = useNavigate();
     const { id } = useParams();
     const { showNotification } = useContext(NotificationContext);
@@ -16,6 +19,8 @@ export default function NoteForm() {
                 const note = response.data;
                 setTitle(note.title);
                 setContent(note.content);
+                setCoverUrl(note.cover_url);
+                setThumbnailUrl(note.thumbnail_url);
             }).catch((error) => showNotification("error in fetching note's details"));
         }
     }, [id])
@@ -44,11 +49,37 @@ export default function NoteForm() {
         navigate("/");
     }
 
+    const handleCoverUploadSuccess = (newCoverUrl, newThumbnailUrl) => {
+        setCoverUrl(newCoverUrl);
+        setThumbnailUrl(newThumbnailUrl);
+        showNotification("封面上传成功！");
+    };
+
+    const handleCoverDeleteSuccess = () => {
+        setCoverUrl(null);
+        setThumbnailUrl(null);
+        showNotification("封面已删除");
+    };
+
     return (
         <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-6">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
                 <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">{id ? "Update Note" : "Create Note"}</h1>
                 <form onSubmit={handleSubmit}>
+                    {/* 封面图上传区域 - 仅在编辑模式下显示 */}
+                    {id && (
+                        <div className="mb-6">
+                            <label className="block text-gray-700 font-medium mb-2">封面图</label>
+                            <CoverUploader
+                                noteId={parseInt(id)}
+                                currentCoverUrl={coverUrl}
+                                currentThumbnailUrl={thumbnailUrl}
+                                onUploadSuccess={handleCoverUploadSuccess}
+                                onDeleteSuccess={handleCoverDeleteSuccess}
+                            />
+                        </div>
+                    )}
+
                     <div className="mb-4">
                         <label htmlFor="title" className="block text-gray-700 font-medium mb-2">Title</label>
                         <input

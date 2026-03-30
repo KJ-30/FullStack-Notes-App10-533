@@ -7,4 +7,5 @@ urlpatterns = [
     path('notes/<int:pk>/', GetNoteDetail.as_view(), name='note-detail'),
     path('notes/<int:pk>/update/', UpdateNote.as_view(), name='note-update'),
     path('notes/<int:pk>/delete/', DeleteNote.as_view(), name='note-delete'),
+    path('notes/<int:pk>/cover/', NoteCoverUploadView.as_view(), name='note-cover-upload'),
 ]
