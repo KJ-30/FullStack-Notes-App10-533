@@ -44,6 +44,16 @@ export default function Home() {
             <NotificationSlider/>
             {notes.map((note) => (
                 <div key={note.id} className="bg-white shadow-xl rounded-lg overflow-hidden transition transform hover:scale-105 hover:shadow-2xl">
+                    {/* 封面图显示 */}
+                    {note.thumbnail_url && (
+                        <div className="w-full h-40 overflow-hidden">
+                            <img
+                                src={note.thumbnail_url}
+                                alt={note.title}
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                    )}
                     <div className="p-6">
                         <div className="font-bold text-2xl mb-4 text-gray-800">{note.title}</div>
                         <p className="text-gray-700 text-base mb-4">{note.content}</p>
