@@ -11,7 +11,7 @@ export default function NotFound(){
               Oops! Page not found
             </p>
             <p className="text-md md:text-lg text-gray-500 mt-4">
-              The page you are looking for doesn't exist.
+              The page you are looking for does not exist.
             </p>
             <Link
               to="/"
